@@ -1,6 +1,6 @@
 # sina-weibo-crawler
 
-# 抽取数据段
+## 抽取数据段
 
 | 段域 | 数据类型 | 含义 | 附加说明 |
 |-------------|-------------|------------|---------------|
@@ -22,7 +22,7 @@
 | self-intro | string | 简介 | |
 | tags | array | 用户标签 | 每个元素为标签字符串 |
 
-# 使用示例
+## 使用示例
 
  ```python
  # -*- coding: utf-8 -*-
@@ -37,138 +37,128 @@ if __name__ == '__main__':
     print crawler.crawl(url = 'http://weibo.cn/yaochen')
  ```
 
- # 示例输出结果
+ ## 示例输出结果
 
     {
     "birthday": "",
     "fans": [
         {
-            "nickname": "用户5760291495",
+            "nickname": "丿子任",
+            "num_fans": 18,
+            "url": "http://weibo.cn/u/5301151254",
+            "verify_info": ""
+        },
+        {
+            "nickname": "Jasmine_200105",
+            "num_fans": 16,
+            "url": "http://weibo.cn/u/5754254176",
+            "verify_info": ""
+        },
+        {
+            "nickname": "赵赵赵赵娟GZ",
+            "num_fans": 17,
+            "url": "http://weibo.cn/u/5229049331",
+            "verify_info": ""
+        },
+        {
+            "nickname": "用户5194588785",
             "num_fans": 2,
-            "url": "http://weibo.cn/u/5760291495",
+            "url": "http://weibo.cn/u/5194588785",
             "verify_info": ""
         },
         {
-            "nickname": "何多多1946057893",
-            "num_fans": 5,
-            "url": "http://weibo.cn/u/1946057893",
+            "nickname": "ai正少",
+            "num_fans": 49,
+            "url": "http://weibo.cn/u/2681105533",
             "verify_info": ""
         },
         {
-            "nickname": "用户5758816679",
-            "num_fans": 1,
-            "url": "http://weibo.cn/u/5758816679",
-            "verify_info": ""
-        },
-        {
-            "nickname": "汤昕瑜",
-            "num_fans": 7,
-            "url": "http://weibo.cn/u/5594790094",
-            "verify_info": ""
-        },
-        {
-            "nickname": "有你就好NZT",
+            "nickname": "D3逗啵小耗子",
             "num_fans": 4,
-            "url": "http://weibo.cn/u/5663756456",
+            "url": "http://weibo.cn/u/5717791993",
             "verify_info": ""
         },
         {
-            "nickname": "加贝凡心",
-            "num_fans": 14,
-            "url": "http://weibo.cn/u/5672655434",
+            "nickname": "小美8679",
+            "num_fans": 50,
+            "url": "http://weibo.cn/u/3790702567",
             "verify_info": ""
         },
         {
-            "nickname": "疯子琴08",
-            "num_fans": 15,
-            "url": "http://weibo.cn/u/5370899326",
+            "nickname": "byhcrown123",
+            "num_fans": 9,
+            "url": "http://weibo.cn/u/5280328847",
             "verify_info": ""
         },
         {
-            "nickname": "夏白橙795",
-            "num_fans": 30,
-            "url": "http://weibo.cn/u/2406626575",
-            "verify_info": ""
-        },
-        {
-            "nickname": "小雨的快乐生活52",
+            "nickname": "浮云总在天边",
             "num_fans": 2,
-            "url": "http://weibo.cn/u/5756714081",
+            "url": "http://weibo.cn/u/5758789211",
             "verify_info": ""
         },
         {
-            "nickname": "用户5672942017",
+            "nickname": "赛车手198411",
             "num_fans": 1,
-            "url": "http://weibo.cn/u/5672942017",
+            "url": "http://weibo.cn/u/5759176656",
             "verify_info": ""
         }
     ],
     "follow": [
         {
-            "fans": 798863,
             "nickname": "毕飞宇",
-            "num_fans": -1,
+            "num_fans": 798868,
             "url": "http://weibo.cn/bifeiyu"
         },
         {
-            "fans": 33531,
             "nickname": "编剧王小平",
-            "num_fans": -1,
+            "num_fans": 33531,
             "url": "http://weibo.cn/u/1150691890"
         },
         {
-            "fans": 8127049,
             "nickname": "英国报姐",
-            "num_fans": -1,
+            "num_fans": 8127079,
             "url": "http://weibo.cn/uktimes"
         },
         {
-            "fans": 177906,
             "nickname": "早稻-野獸",
-            "num_fans": -1,
+            "num_fans": 177911,
             "url": "http://weibo.cn/u/1835883650"
         },
         {
-            "fans": 52687,
             "nickname": "韩浩月",
-            "num_fans": -1,
+            "num_fans": 52687,
             "url": "http://weibo.cn/hanhaoyue"
         },
         {
-            "fans": 1713638,
             "nickname": "故宫博物院",
-            "num_fans": -1,
+            "num_fans": 1713654,
             "url": "http://weibo.cn/gugongweb"
         },
         {
-            "fans": 12054823,
             "nickname": "Mr_凡先生",
-            "num_fans": -1,
+            "num_fans": 12055001,
             "url": "http://weibo.cn/u/3591355593"
         },
         {
-            "fans": 27326,
             "nickname": "洛梅笙",
-            "num_fans": -1,
+            "num_fans": 27326,
             "url": "http://weibo.cn/u/2034280670"
         },
         {
-            "fans": 2779,
             "nickname": "企鹅奸妃",
-            "num_fans": -1,
+            "num_fans": 2779,
             "url": "http://weibo.cn/u/1165842462"
         },
         {
-            "fans": 2342918,
             "nickname": "张译",
-            "num_fans": -1,
+            "num_fans": 2342913,
             "url": "http://weibo.cn/yanyuanzhangyi"
         }
     ],
     "gender": "女",
     "location": "北京 朝阳区",
     "nickname": "姚晨",
-    "num_fans": 78473998,
+    "num_fans": 78474009,
     "num_follow": 456,
     "num_weibo": 8240,
     "relationship_status": "",
@@ -189,16 +179,17 @@ if __name__ == '__main__':
         "转发了 姚晨 的微博:爸妈不在家，老婆还没有，独自过双11。[doge]转发理由:这是爸妈的床，角度问题显大。土豆每天睡前都坐在这里看巧虎，等着妈妈回家，妈妈的怀抱就是他的温床。[张嘴][月亮] //@新浪娱乐:回复@Adela曾晓敏:小土豆只是想要一张小床[笑cry] //@Adela曾晓敏:每天在两百万平方米的床上醒来[眼泪]  ",
         "爸妈不在家，老婆还没有，独自过双11。[doge] 原图 ",
         "转发了 毕飞宇 的微博:【毕飞宇：关于《红楼梦》答新京报记者柏琳问】我一直建议年轻人去读《红楼梦》，尤其是独生子女，不读，就不会懂得中国的宗亲，就无法了解那个巨大的、隐形的、神秘的中国，就无法懂得中国的社会为什么会是“人情社会”，就没法认识“人情社会”的温暖和“人情社会”的邪恶。http://t.cn/RUNpfM2转发理由:转发微博  "
-        ]
+    ]
     }
 
-# 待实现的功能
+
+## 待实现的功能
 
 1.用email和密码组合来模拟登录
 
 登录过程的http重定向比较多，还在尝试中。。。
 
-# FAQ
+## FAQ
 
 1.爬取大量数据会不会被新浪封禁账户？
 

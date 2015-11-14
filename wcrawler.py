@@ -126,7 +126,7 @@ class WCrawler:
                 for ch in e.children:
                     try:
                         if ch.startswith(u'粉丝'):
-                            cur['fans'] = int(ch.strip(u'粉丝').strip(u'人'))
+                            cur['num_fans'] = int(ch.strip(u'粉丝').strip(u'人'))
                     except:
                         continue
             ret.append(cur)
