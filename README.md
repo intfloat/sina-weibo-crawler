@@ -37,7 +37,7 @@ if __name__ == '__main__':
     print crawler.crawl(url = 'http://weibo.cn/yaochen')
  ```
 
- ## 示例输出结果
+## 示例输出结果
 
     {
     "birthday": "",
