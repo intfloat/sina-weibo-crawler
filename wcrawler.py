@@ -66,6 +66,7 @@ class WCrawler:
                     'location': '', \
                     'relationship_status': '', \
                     'sexual_orientation': '', \
+                    'good_at': '', \
                     'self-intro': '', \
                     'tags': []
                     }
@@ -126,14 +127,18 @@ class WCrawler:
             self.data['follow'] = self.data['follow'][:self.max_num_follow]
 
         # step 5: return final result
-        return json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
+        return deepcopy(self.data)
+        # return json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
 
     def __parse_follow(self, soup):
         ret = []
         for table in soup.find_all('table'):
-            cur = {'url': '', 'nickname': '', 'num_fans': -1}
+            cur = {'url': '', 'verify_type': '', 'nickname': '', 'num_fans': -1}
             cur['url'] = table.find_all('a')[0]['href']
             cur['nickname'] = table.find_all('a')[1].get_text()
+            img = filter(lambda x: x['src'] in verify_table, table.find_all('img'))
+            if len(img) > 0:
+                cur['verify_type'] = verify_table[img[0]['src']]
             for e in table.find_all('td'):
                 for ch in e.children:
                     try:
@@ -171,6 +176,7 @@ class WCrawler:
             elif key == u'性取向': self.data['sexual_orientation'] = val
             elif key == u'认证': self.data['verify_info'] = val
             elif key == u'感情状况': self.data['relationship_status'] = val
+            elif key == u'达人': self.data['good_at'] = val
             else: print 'Not include attribute:', key, val
 
     def __parse_fans_and_follow_url(self, soup):
@@ -281,14 +287,12 @@ class WCrawler:
     def __parse_fans(self, soup):
         res = []
         for follow in soup.find_all('table'):
-            cur = {'url': '', 'verify_info': '', 'num_fans': -1, 'nickname': ''}
+            cur = {'url': '', 'verify_type': '', 'num_fans': -1, 'nickname': ''}
             person = follow.find_all('td')[1]
-            cur['url'] = person.find('a')['href']
-            img = person.find_all('img')
+            img = filter(lambda x: x['src'] in verify_table, follow.find_all('img'))
             if len(img) > 0:
-                src = img[0]['src']
-                if src in verify_table:
-                    cur['verify_info'] = verify_table[src]
+                cur['verify_type'] = verify_table[img[0]['src']]
+            cur['url'] = person.find('a')['href']
             pos = person.get_text().rfind(u'粉丝')
             plain = person.get_text()
             cur['nickname'] = plain[0:pos]
