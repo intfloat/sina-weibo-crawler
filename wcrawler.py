@@ -34,9 +34,19 @@ class WCrawler:
             self.headers['Cookie'] = cookie
         else:
             self.headers['Cookie'] = self.__get_cookie()
-        self.max_num_weibo = max_num_weibo
-        self.max_num_fans = max_num_fans
-        self.max_num_follow = max_num_follow
+        self.INF = 10**9
+        if max_num_weibo < 0:
+            self.max_num_weibo = self.INF
+        else:
+            self.max_num_weibo = max_num_weibo
+        if max_num_fans < 0:
+            self.max_num_fans = self.INF
+        else:
+            self.max_num_fans = max_num_fans
+        if max_num_follow < 0:
+            self.max_num_follow = self.INF
+        else:
+            self.max_num_follow = max_num_follow
         self.wfilter = wfilter
         self.data = None
 
@@ -88,30 +98,32 @@ class WCrawler:
         self.__parse_info_list(soup)
 
         # step 3: crawl user's fans list
-        req = self.__get_request(fans_url)
-        soup = BeautifulSoup(req.text, 'lxml')
-        fans_max_page = self.__parse_max_pages(soup)
-        self.data['fans'] += self.__parse_fans(soup)
-        for i in xrange(2, 1 + fans_max_page):
-            if len(self.data['fans']) >= self.max_num_fans:
-                break
-            req = self.__get_request(fans_url + '?page=' + str(i))
+        if self.max_num_fans > 0 and self.data['num_fans'] > 0:
+            req = self.__get_request(fans_url)
             soup = BeautifulSoup(req.text, 'lxml')
+            fans_max_page = self.__parse_max_pages(soup)
             self.data['fans'] += self.__parse_fans(soup)
-        self.data['fans'] = self.data['fans'][:self.max_num_fans]
+            for i in xrange(2, 1 + fans_max_page):
+                if len(self.data['fans']) >= self.max_num_fans:
+                    break
+                req = self.__get_request(fans_url + '?page=' + str(i))
+                soup = BeautifulSoup(req.text, 'lxml')
+                self.data['fans'] += self.__parse_fans(soup)
+            self.data['fans'] = self.data['fans'][:self.max_num_fans]
 
         # step 4: crawl user's follow list
-        req = self.__get_request(follow_url)
-        soup = BeautifulSoup(req.text, 'lxml')
-        follow_max_page = self.__parse_max_pages(soup)
-        self.data['follow'] += self.__parse_follow(soup)
-        for i in xrange(2, 1 + follow_max_page):
-            if len(self.data['follow']) > self.max_num_follow:
-                break
-            req = self.__get_request(follow_url + '?page=' + str(i))
+        if self.max_num_follow > 0 and self.data['num_follow'] > 0:
+            req = self.__get_request(follow_url)
             soup = BeautifulSoup(req.text, 'lxml')
+            follow_max_page = self.__parse_max_pages(soup)
             self.data['follow'] += self.__parse_follow(soup)
-        self.data['follow'] = self.data['follow'][:self.max_num_follow]
+            for i in xrange(2, 1 + follow_max_page):
+                if len(self.data['follow']) > self.max_num_follow:
+                    break
+                req = self.__get_request(follow_url + '?page=' + str(i))
+                soup = BeautifulSoup(req.text, 'lxml')
+                self.data['follow'] += self.__parse_follow(soup)
+            self.data['follow'] = self.data['follow'][:self.max_num_follow]
 
         # step 5: return final result
         return json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
@@ -126,7 +138,7 @@ class WCrawler:
                 for ch in e.children:
                     try:
                         if ch.startswith(u'粉丝'):
-                            cur['num_fans'] = int(ch.strip(u'粉丝').strip(u'人'))
+                            cur['num_fans'] = int(ch[:ch.find(u'人')].strip(u'粉丝'))
                     except:
                         continue
             ret.append(cur)
