@@ -77,6 +77,9 @@ class WCrawler:
         if self.wfilter == ORIGINAL: turl += '?filter=1'
         req = self.__get_request(turl)
         soup = BeautifulSoup(req.text, 'lxml')
+        if self.__abnormal(soup):
+            print 'Error:', url, 'is abnormal user.'
+            return deepcopy(self.data)
         n_page = self.__parse_max_pages(soup)
         self.data['weibo'] = self.__parse_weibo(soup)
         self.data['verify_type'] = self.__parse_user_verify_type(soup)
@@ -129,6 +132,9 @@ class WCrawler:
         # step 5: return final result
         return deepcopy(self.data)
         # return json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
+
+    def __abnormal(self, soup):
+        return soup.get_text().find(u'您当前访问的用户状态异常') >= 0
 
     def __parse_follow(self, soup):
         ret = []
