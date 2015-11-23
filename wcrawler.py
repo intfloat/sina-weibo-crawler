@@ -171,6 +171,11 @@ class WCrawler:
                 pass # do nothing...
             pos = c.find(':')
             if pos < 0 or pos + 1 == len(c):
+                try:
+                    pos = c.find(u'：')
+                except:
+                    continue
+            if pos < 0 or pos + 1 == len(c):
                 continue
             key, val = c[:pos], c[pos + 1:]
             assert(len(key) > 0 and len(val) > 0)
@@ -180,7 +185,7 @@ class WCrawler:
             elif key == u'生日': self.data['birthday'] = val
             elif key == u'简介': self.data['self-intro'] = val
             elif key == u'性取向': self.data['sexual_orientation'] = val
-            elif key == u'认证': self.data['verify_info'] = val
+            elif key == u'认证' or key == u'认证信息': self.data['verify_info'] = val
             elif key == u'感情状况': self.data['relationship_status'] = val
             elif key == u'达人': self.data['good_at'] = val
             else: print 'Not include attribute:', key, val
@@ -240,6 +245,7 @@ class WCrawler:
     #     return ret
 
     def __get_request(self, url, max_try = 3):
+        print url
         cnt = 0
         while cnt < max_try:
             try:
