@@ -26,7 +26,8 @@ class WCrawler:
                         max_num_weibo = 10, \
                         max_num_fans = 10, \
                         max_num_follow = 10, \
-                        wfilter = ORIGINAL):
+                        wfilter = ORIGINAL, \
+                        return_type = "string"):
         self.headers = headers
         self.login_email = None
         self.password = None
@@ -49,6 +50,7 @@ class WCrawler:
             self.max_num_follow = max_num_follow
         self.wfilter = wfilter
         self.data = None
+        self.return_type = return_type
 
     def crawl(self, url = 'http://weibo.cn/yaochen'):
         self.data = {'url': '', \
@@ -130,8 +132,10 @@ class WCrawler:
             self.data['follow'] = self.data['follow'][:self.max_num_follow]
 
         # step 5: return final result
-        return deepcopy(self.data)
-        # return json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
+        if self.return_type == 'string':
+            return json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
+        else:
+            return deepcopy(self.data)
 
     def __abnormal(self, soup):
         return soup.get_text().find(u'您当前访问的用户状态异常') >= 0
