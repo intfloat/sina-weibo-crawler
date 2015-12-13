@@ -2,7 +2,6 @@
 import requests
 import json, re
 import os
-import urllib, urllib2, cookielib
 from bs4 import BeautifulSoup
 from copy import deepcopy
 
@@ -21,13 +20,16 @@ headers = { \
         'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.132 Safari/537.36' \
     }
 ALL, ORIGINAL = 0, 1
+
 class WCrawler:
-    def __init__(self,  cookie = None, \
-                        max_num_weibo = 10, \
-                        max_num_fans = 10, \
-                        max_num_follow = 10, \
-                        wfilter = ORIGINAL, \
-                        return_type = "string"):
+
+
+    def __init__(self,  cookie=None, \
+                        max_num_weibo=10, \
+                        max_num_fans=10, \
+                        max_num_follow=10, \
+                        wfilter=ORIGINAL, \
+                        return_type="string"):
         self.headers = headers
         self.login_email = None
         self.password = None
@@ -52,7 +54,7 @@ class WCrawler:
         self.data = None
         self.return_type = return_type
 
-    def crawl(self, url = 'http://weibo.cn/yaochen'):
+    def crawl(self, url='http://weibo.cn/yaochen'):
         self.data = {'url': '', \
                     'nickname': '', \
                     'verify_type': '', \
@@ -133,7 +135,7 @@ class WCrawler:
 
         # step 5: return final result
         if self.return_type == 'string':
-            return json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
+            return json.dumps(self.data, ensure_ascii=False, sort_keys=True, indent=4).encode('utf-8', 'replace')
         else:
             return deepcopy(self.data)
 
@@ -172,7 +174,7 @@ class WCrawler:
                 if c['href'].find('keyword') > 0:
                     self.data['tags'].append(c.get_text())
             except:
-                pass # do nothing...
+                pass
             pos = c.find(':')
             if pos < 0 or pos + 1 == len(c):
                 try:
@@ -195,7 +197,7 @@ class WCrawler:
             else: print 'Not include attribute:', key, val
 
     def __parse_fans_and_follow_url(self, soup):
-        table = soup.find_all('div', attrs = {'class': 'tip2'})[0]
+        table = soup.find_all('div', attrs={'class': 'tip2'})[0]
         fans_url, follow_url = None, None
         for e in table.children:
             try:
@@ -222,38 +224,12 @@ class WCrawler:
                 return self.__remove_qmark(ret)
         raise 'Error: can not find info tag.'
 
-    # def __get_cookie(self):
-    #     ck = cookielib.CookieJar()
-    #     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(ck))
-    #     urllib2.install_opener(opener)
-    #     page = opener.open("http://3g.sina.com.cn/prog/wapsite/sso/login.php")
-    #     data = page.read()
-    #     password = re.findall('<postfield name="([\S]*)" value="\$\(password\)" />',data)[0]
-    #     vk = re.findall('<postfield name="vk" value="([\S]*)" />',data)[0]
-    #     params = urllib.urlencode({"mobile": self.login_email, \
-    #                                 password: self.password, \
-    #                                 "vk": vk, \
-    #                                 "remember": "on", \
-    #                                 "backURL": "http://weibo.cn", \
-    #                                 "submit": "1"})
-    #     header = {"Content-Type": "application/x-www-form-urlencoded",
-    #                 "Referer": "http://3g.sina.com.cn/prog/wapsite/sso/login.php",
-    #                 "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:29.0) Gecko/20100101 Firefox/29.0"
-    #             }
-    #     req = urllib2.Request("http://3g.sina.com.cn/prog/wapsite/sso/login.php", params, header)
-    #     page = urllib2.urlopen(req)
-    #     print page.read()
-    #     ret = ""
-    #     for item in ck:
-    #         ret += (item.name + '=' + item.value + ';')
-    #     return ret
-
-    def __get_request(self, url, max_try = 3):
+    def __get_request(self, url, max_try=3):
         print url
         cnt = 0
         while cnt < max_try:
             try:
-                req = requests.get(url, headers = self.headers)
+                req = requests.get(url, headers=self.headers)
             except:
                 cnt += 1
                 continue
@@ -261,7 +237,7 @@ class WCrawler:
                 break
             return req
         # Should not reach here if everything is ok.
-        print json.dumps(self.data, ensure_ascii = False, sort_keys = True, indent = 4).encode('utf-8', 'replace')
+        print json.dumps(self.data, ensure_ascii=False, sort_keys=True, indent=4).encode('utf-8', 'replace')
         print 'Error:', url
         assert(False)
 
@@ -292,7 +268,7 @@ class WCrawler:
         return res
 
     def __parse_user_verify_type(self, soup):
-        r = soup.find_all('div', attrs = {'class': 'ut'})[0].find_all('img', attrs = {'alt': 'V'})
+        r = soup.find_all('div', attrs={'class': 'ut'})[0].find_all('img', attrs={'alt': 'V'})
         if len(r) == 0:
             return ''
         src = r[0]['src']
