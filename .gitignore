@@ -57,3 +57,7 @@ docs/_build/
 target/
 *.html
 *.zip
+data/
+ndata/
+*.dat
+*.gz
