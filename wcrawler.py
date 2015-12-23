@@ -137,7 +137,7 @@ class WCrawler:
             follow_max_page = self.__parse_max_pages(soup)
             self.data['follow'] += self.__parse_follow(soup)
             for i in xrange(2, 1 + follow_max_page):
-                if i > self.max_num_page or len(self.data['follow']) > self.max_num_follow:
+                if i > self.max_num_page or len(self.data['follow']) >= self.max_num_follow:
                     break
                 req = self.__get_request(follow_url + '?page=' + str(i))
                 soup = BeautifulSoup(req.text, 'lxml')
