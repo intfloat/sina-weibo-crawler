@@ -24,19 +24,26 @@ ALL, ORIGINAL = 0, 1
 class WCrawler:
 
 
-    def __init__(self,  cookie=None, \
+    def __init__(self,  cookie, \
                         max_num_weibo=10, \
                         max_num_fans=10, \
                         max_num_follow=10, \
+                        max_num_page=50, \
                         wfilter=ORIGINAL, \
                         return_type="string"):
+        """
+        cookie:               登录账户的cookie，强制参数
+        max_num_weibo:        最多抓取的微博条数，负数则爬取所有微博
+        max_num_fans:         最多抓取的粉丝数目，负数则爬取所有粉丝
+        max_num_follow:       最多抓取的关注数目，负数则爬取所有可公开获得的关注
+        max_num_page:         爬取的最多页数，适用于微博、粉丝、关注
+        wfilter:              爬取的微博类型，ALL表示所有微博，ORIGINAL表示只爬取原创微博
+        return_type:          返回值类型，'string'返回字符串化的json数据，'json'就返回一个json对象
+        """
         self.headers = headers
         self.login_email = None
         self.password = None
-        if cookie != None and len(cookie) > 0:
-            self.headers['Cookie'] = cookie
-        else:
-            self.headers['Cookie'] = self.__get_cookie()
+        self.headers['Cookie'] = cookie
         self.INF = 10**9
         if max_num_weibo < 0:
             self.max_num_weibo = self.INF
@@ -50,6 +57,10 @@ class WCrawler:
             self.max_num_follow = self.INF
         else:
             self.max_num_follow = max_num_follow
+        if max_num_page < 0:
+            self.max_num_page = self.INF
+        else:
+            self.max_num_page = max_num_page
         self.wfilter = wfilter
         self.data = None
         self.return_type = return_type
@@ -91,7 +102,7 @@ class WCrawler:
         fans_url, follow_url = self.__parse_fans_and_follow_url(soup)
         # page by page
         for i in xrange(2, 1 + n_page):
-            if len(self.data['weibo']) >= self.max_num_weibo:
+            if i > self.max_num_page or len(self.data['weibo']) >= self.max_num_weibo:
                 break
             turl = self.data['url'] + '?page=' + str(i)
             if self.wfilter == ORIGINAL: turl = self.data['url'] + '?filter=1&page=' + str(i)
@@ -112,7 +123,7 @@ class WCrawler:
             fans_max_page = self.__parse_max_pages(soup)
             self.data['fans'] += self.__parse_fans(soup)
             for i in xrange(2, 1 + fans_max_page):
-                if len(self.data['fans']) >= self.max_num_fans:
+                if i > self.max_num_page or len(self.data['fans']) >= self.max_num_fans:
                     break
                 req = self.__get_request(fans_url + '?page=' + str(i))
                 soup = BeautifulSoup(req.text, 'lxml')
@@ -126,7 +137,7 @@ class WCrawler:
             follow_max_page = self.__parse_max_pages(soup)
             self.data['follow'] += self.__parse_follow(soup)
             for i in xrange(2, 1 + follow_max_page):
-                if len(self.data['follow']) > self.max_num_follow:
+                if i > self.max_num_page or len(self.data['follow']) > self.max_num_follow:
                     break
                 req = self.__get_request(follow_url + '?page=' + str(i))
                 soup = BeautifulSoup(req.text, 'lxml')
