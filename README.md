@@ -15,14 +15,14 @@
 | num_weibo | int | 发布微博数目 | |
 | gender | string  | 性别 | |
 | birthday | string | 生日 | 部分情况下新浪返回星座 |
-| weibo | array | 用户所发微博 | 数组每一个元素为微博文本 |
-| fans | array | 用户粉丝信息 | 每一个元素包含num_fans, url, nickname, verify_info |
-| follow | array | 用户关注信息 | 每一个元素包含num_fans, url, nickname, verify_info |
+| weibo | list | 用户所发微博 | 数组每一个元素为微博文本 |
+| fans | list | 用户粉丝信息 | 每一个元素包含num_fans, url, nickname, verify_info |
+| follow | list | 用户关注信息 | 每一个元素包含num_fans, url, nickname, verify_info |
 | location | string | 地区 | |
 | relationship_status | string | 感情状态 | |
 | sexual_orientation | string | 性取向 | |
 | self-intro | string | 简介 | |
-| tags | array | 用户标签 | 每个元素为标签字符串 |
+| tags | list | 用户标签 | 每个元素为标签字符串 |
 | good_at | string | 达人信息 | |
 
 ## 使用示例
@@ -37,7 +37,8 @@ if __name__ == '__main__':
         max_num_weibo = 10, \
         max_num_fans = 10, \
         max_num_follow = 10, \
-        wfilter = ALL)
+        wfilter = ALL, \
+        return_type = 'string')
     print crawler.crawl(url = 'http://weibo.cn/yaochen')
  ```
 
