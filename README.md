@@ -37,7 +37,7 @@ if __name__ == '__main__':
         max_num_weibo = 10, \
         max_num_fans = 10, \
         max_num_follow = 10, \
-        wfilter = ALL, \
+        wfilter = 'all', \
         return_type = 'string')
     print crawler.crawl(url = 'http://weibo.cn/yaochen')
  ```
@@ -211,3 +211,42 @@ if __name__ == '__main__':
 会的。我只碰到临时封禁的情况，过段时间自动解禁，建议注册马甲。
 
 2.不要爬取所登录账户的微博数据！！网页结构不一样，会挂掉的。
+
+3.提供的WCrawler.crawl() API只能爬取一个用户的微博信息，这有什么卵用？
+
+并不是这样。。。
+`WCrawler.crawl()`只需要一个`url`参数，返回的用户粉丝、关注里面都有`url`，
+可以向外扩展爬取，并且也可以自定义一些过滤规则。
+
+比如，下面的代码实现了功能：
+
+把姚晨作为初始种子用户，
+沿着用户的关注链爬取用户数据，
+过滤掉不是红V认证的，每个用户爬取至多10条微博文本、至多20个关注者、不爬取任何粉丝信息。
+
+```python
+# -*- coding: utf-8 -*-
+from wcrawler import *
+
+if __name__ == '__main__':
+    # set to your own cookie
+    crawler = WCrawler(cookie = '_T_WM=e4012b8a3c24584e9ea7de13e75d4bb; SUB=_2A257kOheRxGP6VYZ9yrLzz2IHXVZeogrrDV6PUJbstBeLXnekW1LHetBZhAVWEBBZSXv3SN2ikAIWTB36w..; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WhhWR.ScVWE1xRNUIMpo5JpX5o2p; SUHB=09P8xGOWDSAKsH; SSOLoginState=1452578867', \
+        max_num_weibo = 10, \
+        max_num_fans = 0, \
+        max_num_follow = 20, \
+        max_num_page = 10, \
+        wfilter = 'all', \
+        return_type='json')
+
+    queue = ['http://weibo.cn/yaochen']
+    visited = set()
+    while len(queue) > 0:
+        url = queue[0]
+        queue = queue[1:]
+        if url in visited:
+            continue
+        json_data = crawler.crawl(url)
+        visited.add(url)
+        queue += [user['url'] for user in json_data['follow'] if user['verify_type'] == 'RED_V']
+    pass
+```
