@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/intfloat/sina-weibo-crawler.svg)](https://travis-ci.org/intfloat/sina-weibo-crawler)
 
+## 运行环境
+
+python2.7，目前不支持python 3。
+
 ## 抽取数据段
 
 | 段域 | 数据类型 | 含义 | 附加说明 |
@@ -187,7 +191,7 @@ if __name__ == '__main__':
     "self-intro": "",
     "sexual_orientation": "",
     "tags": [],
-    "url": "http://weibo.cn/yaochen",
+    "url": "https://weibo.cn/yaochen",
     "verify_info": "演员，联合国难民署中国亲善大使。",
     "verify_type": "RED_V",
     "weibo": [
@@ -238,7 +242,7 @@ if __name__ == '__main__':
         wfilter = 'all', \
         return_type='json')
 
-    queue = ['http://weibo.cn/yaochen']
+    queue = ['https://weibo.cn/yaochen']
     visited = set()
     while len(queue) > 0:
         url = queue[0]
