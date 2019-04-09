@@ -48,10 +48,10 @@ class WCrawler:
 
         # some constant, DO NOT CHANGE THEM
         RED_V, BLUE_V, VIP, ACTIVE = 'RED_V', 'BLUE_V', 'VIP', 'ACTIVE'
-        self.verify_table = {'http://u1.sinaimg.cn/upload/2011/07/28/5338.gif': RED_V,
-                        'http://u1.sinaimg.cn/upload/2011/07/28/5337.gif': BLUE_V,
-                        'http://u1.sinaimg.cn/upload/h5/img/hyzs/donate_btn_s.png': VIP,
-                        'http://u1.sinaimg.cn/upload/2011/08/16/5547.gif': ACTIVE}
+        self.verify_table = {'https://u1.sinaimg.cn/upload/2011/07/28/5338.gif': RED_V,
+                        'https://u1.sinaimg.cn/upload/2011/07/28/5337.gif': BLUE_V,
+                        'https://u1.sinaimg.cn/upload/h5/img/hyzs/donate_btn_s.png': VIP,
+                        'https://u1.sinaimg.cn/upload/2011/08/16/5547.gif': ACTIVE}
         self.headers = { \
                 'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', \
                 'Accept-Encoding':'gzip, deflate, sdch', \
@@ -69,7 +69,7 @@ class WCrawler:
             exit(1)
         self.headers['Cookie'] = cookie
 
-    def crawl(self, url='http://weibo.cn/yaochen'):
+    def crawl(self, url='https://weibo.cn/yaochen'):
         self.data = {'url': '', \
                     'nickname': '', \
                     'verify_type': '', \
@@ -221,10 +221,10 @@ class WCrawler:
                     self.data['num_weibo'] = int(text.strip(u'微博|[|]'))
                 elif text.startswith(u'关注'):
                     self.data['num_follow'] = int(text.strip(u'关注|[|]'))
-                    follow_url = self.__remove_qmark('http://weibo.cn' + e['href'])
+                    follow_url = self.__remove_qmark('https://weibo.cn' + e['href'])
                 elif text.startswith(u'粉丝'):
                     self.data['num_fans'] = int(text.strip(u'粉丝|[|]'))
-                    fans_url = self.__remove_qmark('http://weibo.cn' + e['href'])
+                    fans_url = self.__remove_qmark('https://weibo.cn' + e['href'])
             except:
                 continue
         assert(follow_url != None and fans_url != None)
@@ -235,7 +235,7 @@ class WCrawler:
         for e in table.find_all('a'):
             if e.get_text() == u'资料':
                 assert(e['href'][0] == '/')
-                ret = 'http://weibo.cn' + e['href']
+                ret = 'https://weibo.cn' + e['href']
                 return self.__remove_qmark(ret)
         # Should not reach here in normal case
         stderr.write('Error: can not find info tag.\n')
@@ -255,7 +255,7 @@ class WCrawler:
             return req
         # Should not reach here if everything is ok.
         stderr.write(json.dumps(self.data, ensure_ascii=False, sort_keys=True, indent=4).encode('utf-8', 'replace'))
-        stderr.write('Error: %s\n', url)
+        stderr.write('Error: %s\n' % url)
         exit(1)
 
     def __parse_weibo(self, soup):

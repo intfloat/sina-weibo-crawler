@@ -39,7 +39,7 @@ if __name__ == '__main__':
         max_num_follow = 10, \
         wfilter = 'all', \
         return_type = 'string')
-    print crawler.crawl(url = 'http://weibo.cn/yaochen')
+    print crawler.crawl(url = 'https://weibo.cn/yaochen')
  ```
 
 ## cookie在哪儿呢？
